@@ -59,11 +59,7 @@ jobs:
           git config user.name "ankush152002"
           git config user.email "ankush152002@gmail.com"
 
-          # Set image name in values.yml
-          # yq e '.image.name = "${{ secrets.GCP_GAR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPO }}/${{ secrets.GCP_IMAGE_NAME }}"' -i values.yml
-
-          # Set image tag to the commit ID in values.yml
-          # yq e '.image.tag = "${{ github.sha }}"' -i values.yml  # Use commit ID as tag
+          
 
           # Step 7: Update deployment.yml with the new image tag
           yq e '.spec.template.spec.containers[0].image = "${{ secrets.GCP_GAR_HOST }}/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_REPO }}/${{ secrets.GCP_IMAGE_NAME }}:${{ github.sha }}"' -i Deployment.yml
