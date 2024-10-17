@@ -23,8 +23,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          # Navigate to the application directory and build the Docker image
-          cd hello-world-repo/hello-world-app1
+          
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/node-apps/hello-world-app1:latest .
 
       - name: Push Docker Image to Artifact Registry
