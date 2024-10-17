@@ -25,11 +25,6 @@ jobs:
           # Build the Docker image
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/node-apps/hello-world-app1:latest .
           
-      # Step 4: Configure Docker to use gcloud as a credential helper for Artifact Registry
-      - name: Configure Docker for Artifact Registry
-        run: |
-          echo "${{ steps.auth.outputs.access_token }}" | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev
-
       - name: Push Docker Image to Artifact Registry
         run: |
           # Push the Docker image to Google Cloud Artifact Registry
