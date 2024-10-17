@@ -44,7 +44,7 @@ jobs:
           image="us-central1-docker.pkg.dev/end-to-end-project-438607/node-apps/hello-world-app1:${{ env.IMAGE_TAG }}"
 
           # Build the Docker image
-          docker build -t "$image" "node-apps/hello-world-app1"
+          docker build -t "$image" .
 
           # Push the Docker image
           docker push "$image"
