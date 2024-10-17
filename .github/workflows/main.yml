@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+
+      - name: Build Docker Image
+        run: |
+          # Build the Docker image
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-world-app1:latest .
+          
+      - name: Configure Docker for Google Cloud
+        run: |
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }} | docker login -u _json_key --password-stdin https://gcr.io
+
+      - name: Push Docker Image to Artifact Registry
+        run: |
+          # Push the Docker image to Google Cloud Artifact Registry
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/node-apps/hello-world-app1:latest
